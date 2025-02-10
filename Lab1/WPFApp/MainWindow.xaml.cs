@@ -1,5 +1,6 @@
 ﻿using BusinessObjects;
 using Services;
+using System;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -47,9 +48,9 @@ namespace WPFApp
         {
             try
             {
-                var products = _productService.GetProducts();
-                dgData.ItemsSource = null;
+                List<Product> products = _productService.GetProducts();
                 dgData.ItemsSource = products;
+                dgData.Items.Refresh();
             }
             catch (Exception ex)
             {
@@ -73,6 +74,11 @@ namespace WPFApp
             {
                 DataGrid dataGrid = sender as DataGrid;
                 DataGridRow row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
+                if (row == null)
+                {
+                    // Nếu dòng chưa được tạo, hãy thử đợi một chút và thử lại
+                    return;
+                }
                 DataGridCell rowColumn = dataGrid.Columns[0].GetCellContent(row).Parent as DataGridCell;
                 string id = ((TextBlock)rowColumn.Content).Text;
                 var product = _productService.GetProductById(int.Parse(id));
