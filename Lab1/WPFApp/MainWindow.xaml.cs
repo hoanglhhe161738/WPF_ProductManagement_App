@@ -54,7 +54,7 @@ namespace WPFApp
             }
             catch (Exception ex)
             {
-                //MessageBox.Show($"Xảy ra lỗi: {ex.Message} khi lấy danh sách sản phẩm");
+                MessageBox.Show($"Xảy ra lỗi: {ex.Message} khi lấy danh sách sản phẩm");
             }
             finally { 
                 ResetInput();
@@ -76,7 +76,6 @@ namespace WPFApp
                 DataGridRow row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
                 if (row == null)
                 {
-                    // Nếu dòng chưa được tạo, hãy thử đợi một chút và thử lại
                     return;
                 }
                 DataGridCell rowColumn = dataGrid.Columns[0].GetCellContent(row).Parent as DataGridCell;
