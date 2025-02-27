@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using Repositories;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,6 @@ namespace Services
     public class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountRepo = new AccountRepository();
-        public AccountMember GetAccountMember(string accountId) => _accountRepo.GetAccountMemberById(accountId);
+        public int GetAccountMember(string accountId, string password) => _accountRepo.GetAccountMemberById(accountId, password);
     }
 }

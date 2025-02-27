@@ -1,9 +1,5 @@
-﻿using BusinessObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BusinessObjects.Models;
+
 
 namespace DataAccessLayer
 {
@@ -11,10 +7,11 @@ namespace DataAccessLayer
     {
         private static List<Product> products = new List<Product>()
         {
-            new Product(1, "Chai", 3, 12, 18),
-            new Product(2, "Chang", 1, 23, 19),
-            new Product(3, "Aniseed Syrup", 2, 23, 10)
+            //new Product(1, "Chai", 3, 12, 18),
+            //new Product(2, "Chang", 1, 23, 19),
+            //new Product(3, "Aniseed Syrup", 2, 23, 10)
         };
+        private static int key = getKey();
         //public static List<Product> InitialProduct() {
         //    Product chai = new Product(1, "Chai", 3, 12, 18);
         //    Product chang = new Product(2, "Chang", 1, 23, 19);
@@ -25,35 +22,76 @@ namespace DataAccessLayer
         //    productList.Add(aniseed);
         //    return productList;
         //}
-        private static int getKey() => products.Count() + 1;
-        public static List<Product> GetProducts() => products;
-        public static void AddProduct(Product product)
+        private static int getKey() => products.Count();
+        public List<Product> GetProducts()
         {
-            product.ProductId = getKey();
-            products.Add(product);
+            try
+            {
+                using var context = new MyStoreContext();
+                var proucts = context.Products.ToList();
+                return proucts;
+            }
+            catch (Exception ex)
+            {
+                return null;
+                throw new Exception(ex.Message);
+            }
+        }
+        public  void AddProduct(Product product)
+        {
+            try
+            {
+                using var context = new MyStoreContext();
+                context.Products.Add(product);
+                context.SaveChanges();
+            }
+            catch (Exception ex) {
+                throw new Exception(ex.Message);
+            }
         } 
 
-        public static void UpdateProduct(Product product)
+        public void UpdateProduct(Product product)
         {
-            Product productUpdate = products.Find(p => p.ProductId == product.ProductId);
-            if (productUpdate != null)
+            try
             {
-                productUpdate.ProductId = product.ProductId;
-                productUpdate.ProductName = product.ProductName;
-                productUpdate.UnitPrice = product.UnitPrice;
-                productUpdate.UnitsInstock = product.UnitsInstock;
-                productUpdate.CategpryId = product.CategpryId;
+                using var context = new MyStoreContext();
+                context.Entry<Product>(product).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                context.SaveChanges();
             }
-            
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public static void DeleteProduct(int id)
+        public void DeleteProduct(int id)
         {
-            var productDelete = products.Find(p => p.ProductId == id);
-            if(productDelete != null)
-                products.Remove(productDelete);
+            try
+            {
+                using var context = new MyStoreContext();
+                var product = context.Products.SingleOrDefault(p => p.ProductId == id);   
+                context.Products.Remove(product);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
-        public static Product GetProductById(int id) => products.Find(p => p.ProductId == id);
+        public  Product GetProductById(int id)
+        {
+            try
+            {
+                using var context = new MyStoreContext();
+                var product = context.Products.Find(id);
+                return product;
+            }
+            catch (Exception ex)
+            {
+                return null;
+                throw new Exception(ex.Message);
+            }
+        }
 
     }
 }

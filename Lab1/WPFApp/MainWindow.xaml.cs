@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using Services;
 using System;
 using System.Text;
@@ -84,8 +85,8 @@ namespace WPFApp
                 txtProductID.Text = product.ProductId.ToString();
                 txtProductName.Text = product.ProductName.ToString();
                 txtPrice.Text = product.UnitPrice.ToString();
-                txtUnitsInStock.Text = product.UnitsInstock.ToString();
-                cboCategory.SelectedValue = product.CategpryId;
+                txtUnitsInStock.Text = product.UnitsInStock.ToString();
+                cboCategory.SelectedValue = product.CategoryId;
             }
             catch (Exception ex)
             {
@@ -103,8 +104,8 @@ namespace WPFApp
                 {
                     ProductName = txtProductName.Text,
                     UnitPrice = decimal.Parse(txtPrice.Text),
-                    UnitsInstock = short.Parse(txtUnitsInStock.Text),
-                    CategpryId = int.Parse(cboCategory.SelectedValue.ToString()),
+                    UnitsInStock = short.Parse(txtUnitsInStock.Text),
+                    CategoryId = int.Parse(cboCategory.SelectedValue.ToString()),
                 };
                 _productService.AddProduct(product);
             }
@@ -122,14 +123,14 @@ namespace WPFApp
         {
             try
             {
-                var product = new Product(int.Parse(txtProductID.Text), txtProductName.Text, (int)cboCategory.SelectedValue, short.Parse(txtUnitsInStock.Text), decimal.Parse(txtPrice.Text));
-                //{
-                //    ProductId = int.Parse(txtProductID.Text),
-                //    ProductName = txtProductName.Text,
-                //    CategpryId = (int)cboCategory.SelectedValue,
-                //    UnitsInstock = short.Parse(txtUnitsInStock.Text),
-                //    UnitPrice = decimal.Parse(txtPrice.Text)
-                //};
+                var product = new Product
+                {
+                    ProductId = int.Parse(txtProductID.Text),
+                    ProductName = txtProductName.Text,
+                    CategoryId = (int)cboCategory.SelectedValue,
+                    UnitsInStock = short.Parse(txtUnitsInStock.Text),
+                    UnitPrice = decimal.Parse(txtPrice.Text)
+                };
                 _productService.UpdateProduct(product);
             }
             catch (Exception ex)

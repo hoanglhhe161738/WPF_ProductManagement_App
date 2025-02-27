@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Repositories
 {
     public interface IAccountRepository
     {
-        AccountMember GetAccountMemberById(string accountMemberId);
+        int GetAccountMemberById(string accountMemberId, string password);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using DataAccessLayer;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
-        public List<Category> GetCategories() => CategoryDAO.GetCategories();
+        private readonly CategoryDAO categoryDAO = new CategoryDAO();
+        public List<Category> GetCategories() => categoryDAO.GetCategories();
     }
 }

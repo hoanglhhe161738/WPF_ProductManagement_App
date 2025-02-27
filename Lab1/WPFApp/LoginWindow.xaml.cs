@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using Services;
 using System;
 using System.Collections.Generic;
@@ -30,16 +31,22 @@ namespace WPFApp
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            AccountMember account = _accountService.GetAccountMember(txtUser.Text);
-            if (account != null && account.MemberPassword.Equals(txtPass.Password) && account.MemberRole == 1) {
+            int account = _accountService.GetAccountMember(txtUser.Text, txtPass.Password);
+            if(account == 1)
+            {
                 this.Hide();
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
-            }
-            else
+            }else if( account == -1)
+            {
+                MessageBox.Show("Wrong username and password");
+
+            }else if(account == -2)
             {
                 MessageBox.Show("You are not permission");
+
             }
+
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)

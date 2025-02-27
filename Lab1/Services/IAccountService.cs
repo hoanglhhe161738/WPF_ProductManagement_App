@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Services
 {
     public interface IAccountService
     {
-        AccountMember GetAccountMember(string accountId);
+        int GetAccountMember(string accountId, string password);
     }
 }

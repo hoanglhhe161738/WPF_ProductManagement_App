@@ -1,4 +1,5 @@
 ﻿using BusinessObjects;
+using BusinessObjects.Models;
 using DataAccessLayer;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace Repositories
 {
     public class AccountRepository : IAccountRepository
     {
-        public AccountMember GetAccountMemberById(string accountMemberId) => AccountDAO.GetAccountById(accountMemberId);
+        public AccountDAO AccountDAO = new AccountDAO();
+        public int GetAccountMemberById(string accountMemberId, string password) => AccountDAO.GetAccountById(accountMemberId, password);
     }
 }
